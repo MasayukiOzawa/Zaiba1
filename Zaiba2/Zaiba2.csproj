@@ -48,6 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\BaseQuery.cs" />
+    <Compile Include="frmSessionQuery.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSessionQuery.Designer.cs">
+      <DependentUpon>frmSessionQuery.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmZaiba2Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -56,6 +62,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmSessionQuery.resx">
+      <DependentUpon>frmSessionQuery.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmZaiba2Main.resx">
       <DependentUpon>frmZaiba2Main.cs</DependentUpon>
     </EmbeddedResource>

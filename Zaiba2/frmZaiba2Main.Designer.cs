@@ -45,8 +45,6 @@
             this.lblEndTime = new System.Windows.Forms.Label();
             this.lblStartTime = new System.Windows.Forms.Label();
             this.chkContinue = new System.Windows.Forms.CheckBox();
-            this.lblQuerySessionID = new System.Windows.Forms.Label();
-            this.txtQuerySession = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridQueryResult)).BeginInit();
             this.SuspendLayout();
             // 
@@ -215,31 +213,11 @@
             this.chkContinue.Text = "0 件の場合に処理終了";
             this.chkContinue.UseVisualStyleBackColor = true;
             // 
-            // lblQuerySessionID
-            // 
-            this.lblQuerySessionID.AutoSize = true;
-            this.lblQuerySessionID.Location = new System.Drawing.Point(936, 13);
-            this.lblQuerySessionID.Name = "lblQuerySessionID";
-            this.lblQuerySessionID.Size = new System.Drawing.Size(0, 12);
-            this.lblQuerySessionID.TabIndex = 15;
-            // 
-            // txtQuerySession
-            // 
-            this.txtQuerySession.Location = new System.Drawing.Point(938, 42);
-            this.txtQuerySession.Multiline = true;
-            this.txtQuerySession.Name = "txtQuerySession";
-            this.txtQuerySession.ReadOnly = true;
-            this.txtQuerySession.Size = new System.Drawing.Size(364, 141);
-            this.txtQuerySession.TabIndex = 16;
-            this.txtQuerySession.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAllSelect);
-            // 
             // frmZaiba2Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1318, 465);
-            this.Controls.Add(this.txtQuerySession);
-            this.Controls.Add(this.lblQuerySessionID);
             this.Controls.Add(this.chkContinue);
             this.Controls.Add(this.lblDataGetTime);
             this.Controls.Add(this.lblEndTime);
@@ -281,8 +259,6 @@
         private System.Windows.Forms.Label lblEndTime;
         private System.Windows.Forms.Label lblStartTime;
         private System.Windows.Forms.CheckBox chkContinue;
-        private System.Windows.Forms.Label lblQuerySessionID;
-        private System.Windows.Forms.TextBox txtQuerySession;
     }
 }
 

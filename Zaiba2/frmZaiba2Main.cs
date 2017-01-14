@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Configuration;
-using System.Data.SqlClient;
 using Zaiba2.Common;
 
 namespace Zaiba2
@@ -16,9 +16,8 @@ namespace Zaiba2
     public partial class frmZaiba2Main : Form
     {
         string constring = ConfigurationManager.ConnectionStrings["Zaiba2.Properties.Settings.DBConnection"].ConnectionString;
-        DataTable dt = new DataTable();
         int commandtimeout = Properties.Settings.Default.CommandTimeout;
-
+        DataTable dt = new DataTable();
 
         public frmZaiba2Main()
         {
@@ -40,10 +39,12 @@ namespace Zaiba2
                 int gridrowindex = dataGridQueryResult.FirstDisplayedScrollingRowIndex;
 
                 dt.Clear();
+                dt.Columns.Clear();
                 sda.Fill(dt);
                 lblDataGetTime.Text = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss.fff");
                 if (dt.Rows.Count != 0 || chkContinue.Checked ==  false)
                 {
+ 
                     dataGridQueryResult.DataSource = dt;
                     if (dataGridQueryResult.RowCount >= gridrowindex && gridrowindex > 0)
                     {
@@ -90,23 +91,17 @@ namespace Zaiba2
             DataGridView _grid = (DataGridView)sender;
             int _sessionid;
 
-            if (_grid.Columns[0].HeaderText == "session_id" || _grid.Columns[0].HeaderText == "sessionid")
+            for (int i = 0;i < _grid.ColumnCount; i++) 
             {
-                _sessionid = int.Parse(_grid.CurrentRow.Cells[0].Value.ToString());
-                lblQuerySessionID.Text = _sessionid.ToString();
-                string CmdString = string.Empty;
-                using (SqlConnection con = new SqlConnection(constring))
+
+                if (_grid.Columns[i].HeaderText == "session_id" || _grid.Columns[i].HeaderText == "sessionid")
                 {
-                    con.Open();
-                    SqlCommand cmd = new SqlCommand(String.Format("DBCC INPUTBUFFER({0})", _sessionid.ToString()), con);
-                    cmd.CommandTimeout = commandtimeout;
-                    SqlDataReader dr = cmd.ExecuteReader();
-                    while (dr.Read())
-                    {
-                        txtQuerySession.Text = dr[2].ToString();
-                    }
+                    _sessionid = int.Parse(_grid.CurrentRow.Cells[0].Value.ToString());
+                    Form SessoinQuery = new frmSessionQuery(_sessionid);
+                    SessoinQuery.Show();
                 }
             }
+
         }
     }
 }
