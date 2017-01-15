@@ -52,6 +52,32 @@ WHERE
 ORDER BY
     session_id, request_id, node_id, thread_id",
 @"SELECT
+    qp.session_id, 
+	DB_NAME(qp.database_id) AS db_name,
+    qp.request_id, 
+    ot.task_state,
+    qp.physical_operator_name, 
+    qp.node_id, 
+    qp.thread_id, 
+    qp.row_count,
+    qp.estimate_row_count,
+	qp.elapsed_time_ms,
+	qp.cpu_time_ms
+FROM
+    sys.dm_exec_query_profiles qp
+    CROSS APPLY
+    sys.dm_exec_sql_text (sql_handle) t
+    CROSS APPLY
+    sys.dm_exec_query_plan(plan_handle) p
+    LEFT JOIN
+    sys.dm_os_tasks ot
+ON
+    qp.task_address = ot.task_address
+WHERE
+	qp.session_id <> @@SPID
+ORDER BY
+    session_id, request_id, node_id, thread_id",
+@"SELECT
 	DB_NAME([sys].[master_files].[database_id]) AS [DatabaseName], 
 	type_desc,
 	SUM([fn_virtualfilestats].[NumberReads]) AS [NumberReads],
@@ -76,6 +102,31 @@ GROUP BY
 ORDER BY
 	database_id,
 	type
+OPTION (RECOMPILE)",
+@"SELECT 
+	[database_files].[name], 
+	[database_files].[type_desc],
+	[database_files].[size] * 8.0 AS size,  
+	[database_files].[max_size] * 8.0 AS max_size_KB,  
+	[database_files].[growth],
+	CASE [is_percent_growth]
+		WHEN 0 THEN [database_files].[growth] * 8.0 
+		ELSE [growth]
+	END AS [converted_growth],
+	[database_files].[is_percent_growth],
+	[fn_virtualfilestats].[NumberReads], 
+	[fn_virtualfilestats].[IoStallReadMS], 
+	[fn_virtualfilestats].[BytesRead],  
+	[fn_virtualfilestats].[NumberWrites],  
+	[fn_virtualfilestats].[IoStallWriteMS], 
+	[fn_virtualfilestats].[BytesWritten],  
+	[fn_virtualfilestats].[BytesOnDisk] 
+FROM 
+	fn_virtualfilestats(DB_ID(), NULL) 
+	LEFT JOIN
+	sys.database_files
+	ON
+	database_files.file_id  = fn_virtualfilestats.FileId
 OPTION (RECOMPILE)",
 @"
 SELECT
@@ -147,5 +198,18 @@ ORDER BY
 
     session_id ASC"
         };
+        public Dictionary<string, int> GetTemplateList()
+        {
+            Dictionary<String, int> TemplateList = new Dictionary<string, int>();
+            TemplateList.Add("クエリ実行状況の取得 (SQL Server)", 0);
+            TemplateList.Add("クエリ実行状況の取得 (SQL Database)", 1);
+            TemplateList.Add("ファイル I/O の取得 (SQL Server)", 2);
+            TemplateList.Add("ファイル I/O の取得 (SQL Database)", 3);
+            TemplateList.Add("利用状況モニター (SQL Server/SQL Database)", 4);
+            return TemplateList;
+        }
+        
     }
+
+
 }

@@ -73,7 +73,8 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmSessionQuery";
-            this.Text = "frmSessionQuery";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "セッションのクエリ情報";
             this.ResumeLayout(false);
             this.PerformLayout();
 

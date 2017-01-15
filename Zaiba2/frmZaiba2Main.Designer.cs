@@ -45,12 +45,12 @@
             this.lblEndTime = new System.Windows.Forms.Label();
             this.lblStartTime = new System.Windows.Forms.Label();
             this.chkContinue = new System.Windows.Forms.CheckBox();
-            this.panelTemplate = new System.Windows.Forms.Panel();
-            this.radioQuery3 = new System.Windows.Forms.RadioButton();
-            this.radioQuery2 = new System.Windows.Forms.RadioButton();
-            this.radioQuery1 = new System.Windows.Forms.RadioButton();
+            this.dataSetQueryTemplate = new Zaiba2.DataSetQueryTemplate();
+            this.comboQueryTemplate = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.panelTemplate = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridQueryResult)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSetQueryTemplate)).BeginInit();
             this.panelTemplate.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -220,61 +220,25 @@
             this.chkContinue.Name = "chkContinue";
             this.chkContinue.Size = new System.Drawing.Size(146, 22);
             this.chkContinue.TabIndex = 14;
-            this.chkContinue.Text = "0 件の場合に処理終了";
+            this.chkContinue.Text = "0 件の場合に処理停止";
             this.chkContinue.UseVisualStyleBackColor = true;
             // 
-            // panelTemplate
+            // dataSetQueryTemplate
             // 
-            this.panelTemplate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelTemplate.Controls.Add(this.radioQuery3);
-            this.panelTemplate.Controls.Add(this.radioQuery2);
-            this.panelTemplate.Controls.Add(this.radioQuery1);
-            this.panelTemplate.Controls.Add(this.label1);
-            this.panelTemplate.Location = new System.Drawing.Point(944, 13);
-            this.panelTemplate.Name = "panelTemplate";
-            this.panelTemplate.Size = new System.Drawing.Size(272, 129);
-            this.panelTemplate.TabIndex = 15;
+            this.dataSetQueryTemplate.DataSetName = "DataSetQueryTemplate";
+            this.dataSetQueryTemplate.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
-            // radioQuery3
+            // comboQueryTemplate
             // 
-            this.radioQuery3.AutoSize = true;
-            this.radioQuery3.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.radioQuery3.Location = new System.Drawing.Point(7, 91);
-            this.radioQuery3.Name = "radioQuery3";
-            this.radioQuery3.Size = new System.Drawing.Size(122, 22);
-            this.radioQuery3.TabIndex = 3;
-            this.radioQuery3.Tag = "2";
-            this.radioQuery3.Text = "利用状況モニター";
-            this.radioQuery3.UseVisualStyleBackColor = true;
-            this.radioQuery3.CheckedChanged += new System.EventHandler(this.SetQueryText);
-            // 
-            // radioQuery2
-            // 
-            this.radioQuery2.AutoSize = true;
-            this.radioQuery2.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.radioQuery2.Location = new System.Drawing.Point(7, 56);
-            this.radioQuery2.Name = "radioQuery2";
-            this.radioQuery2.Size = new System.Drawing.Size(170, 22);
-            this.radioQuery2.TabIndex = 2;
-            this.radioQuery2.Tag = "1";
-            this.radioQuery2.Text = "DB のファイル I/O の取得";
-            this.radioQuery2.UseVisualStyleBackColor = true;
-            this.radioQuery2.CheckedChanged += new System.EventHandler(this.SetQueryText);
-            // 
-            // radioQuery1
-            // 
-            this.radioQuery1.AutoSize = true;
-            this.radioQuery1.Checked = true;
-            this.radioQuery1.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.radioQuery1.Location = new System.Drawing.Point(7, 34);
-            this.radioQuery1.Name = "radioQuery1";
-            this.radioQuery1.Size = new System.Drawing.Size(146, 22);
-            this.radioQuery1.TabIndex = 1;
-            this.radioQuery1.TabStop = true;
-            this.radioQuery1.Tag = "0";
-            this.radioQuery1.Text = "クエリ実行状況の取得";
-            this.radioQuery1.UseVisualStyleBackColor = true;
-            this.radioQuery1.CheckedChanged += new System.EventHandler(this.SetQueryText);
+            this.comboQueryTemplate.DataSource = this.dataSetQueryTemplate;
+            this.comboQueryTemplate.DisplayMember = "DataTableQueryTemplate.TemplateName";
+            this.comboQueryTemplate.FormattingEnabled = true;
+            this.comboQueryTemplate.Location = new System.Drawing.Point(7, 25);
+            this.comboQueryTemplate.Name = "comboQueryTemplate";
+            this.comboQueryTemplate.Size = new System.Drawing.Size(272, 20);
+            this.comboQueryTemplate.TabIndex = 16;
+            this.comboQueryTemplate.ValueMember = "DataTableQueryTemplate.TemplateIndex";
+            this.comboQueryTemplate.SelectedIndexChanged += new System.EventHandler(this.comboQueryTemplate_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -285,6 +249,16 @@
             this.label1.Size = new System.Drawing.Size(116, 18);
             this.label1.TabIndex = 0;
             this.label1.Text = "クエリテンプレート";
+            // 
+            // panelTemplate
+            // 
+            this.panelTemplate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelTemplate.Controls.Add(this.comboQueryTemplate);
+            this.panelTemplate.Controls.Add(this.label1);
+            this.panelTemplate.Location = new System.Drawing.Point(944, 13);
+            this.panelTemplate.Name = "panelTemplate";
+            this.panelTemplate.Size = new System.Drawing.Size(295, 72);
+            this.panelTemplate.TabIndex = 15;
             // 
             // frmZaiba2Main
             // 
@@ -308,8 +282,10 @@
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
             this.Name = "frmZaiba2Main";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Zaiba2";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridQueryResult)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSetQueryTemplate)).EndInit();
             this.panelTemplate.ResumeLayout(false);
             this.panelTemplate.PerformLayout();
             this.ResumeLayout(false);
@@ -335,11 +311,10 @@
         private System.Windows.Forms.Label lblEndTime;
         private System.Windows.Forms.Label lblStartTime;
         private System.Windows.Forms.CheckBox chkContinue;
-        private System.Windows.Forms.Panel panelTemplate;
-        private System.Windows.Forms.RadioButton radioQuery1;
+        private DataSetQueryTemplate dataSetQueryTemplate;
+        private System.Windows.Forms.ComboBox comboQueryTemplate;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.RadioButton radioQuery2;
-        private System.Windows.Forms.RadioButton radioQuery3;
+        private System.Windows.Forms.Panel panelTemplate;
     }
 }
 

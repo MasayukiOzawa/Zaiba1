@@ -24,6 +24,11 @@ namespace Zaiba2
 
             BaseQuery query = new BaseQuery();
             txtQuery.Text = query.QueryTemplate[0];
+            Dictionary<String, int> TempLateList = query.GetTemplateList();
+            foreach(var _Template in TempLateList.Keys)
+            {
+                dataSetQueryTemplate.DataTableQueryTemplate.AddDataTableQueryTemplateRow(_Template,TempLateList[_Template] );
+            }
         }
 
         public void SetGrid(object sender, EventArgs e)
@@ -41,7 +46,7 @@ namespace Zaiba2
                     DataTable dt = new DataTable();
 
                     int gridrowindex = dataGridQueryResult.FirstDisplayedScrollingRowIndex;
-                    int colindex = dataGridQueryResult.FirstDisplayedScrollingColumnIndex;
+                    int gridcolindex = dataGridQueryResult.FirstDisplayedScrollingColumnIndex;
 
                     sda.Fill(dt);
                     lblDataGetTime.Text = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss.fff");
@@ -53,7 +58,10 @@ namespace Zaiba2
                         {
                             dataGridQueryResult.FirstDisplayedScrollingRowIndex = gridrowindex;
                         }
-
+                        if (dataGridQueryResult.ColumnCount >= gridcolindex && gridcolindex > 0)
+                        {
+                            dataGridQueryResult.FirstDisplayedScrollingColumnIndex = gridcolindex;
+                        }
                     }
                     else
                     {
@@ -66,8 +74,8 @@ namespace Zaiba2
 
             }
             catch (SqlException ex){
+                timerQuery.Stop();
                 MessageBox.Show(String.Format("セッションのクエリ取得でエラーが発生しました。\r\n{0}", ex.Message));
-
             }
         }
 
@@ -121,6 +129,13 @@ namespace Zaiba2
                     }
                 }
             }
+        }
+
+        private void comboQueryTemplate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox _combo = (ComboBox)sender;
+            BaseQuery query = new BaseQuery();
+            txtQuery.Text = query.QueryTemplate[int.Parse(_combo.SelectedValue.ToString())];
         }
     }
 }

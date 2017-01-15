@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSetQueryTemplate" targetNamespace="http://tempuri.org/DataSetQueryTemplate.xsd" xmlns:mstns="http://tempuri.org/DataSetQueryTemplate.xsd" xmlns="http://tempuri.org/DataSetQueryTemplate.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSetQueryTemplate" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSetQueryTemplate" msprop:Generator_UserDSName="DataSetQueryTemplate">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTableQueryTemplate" msprop:Generator_TableClassName="DataTableQueryTemplateDataTable" msprop:Generator_TableVarName="tableDataTableQueryTemplate" msprop:Generator_TablePropName="DataTableQueryTemplate" msprop:Generator_RowDeletingName="DataTableQueryTemplateRowDeleting" msprop:Generator_RowChangingName="DataTableQueryTemplateRowChanging" msprop:Generator_RowEvHandlerName="DataTableQueryTemplateRowChangeEventHandler" msprop:Generator_RowDeletedName="DataTableQueryTemplateRowDeleted" msprop:Generator_UserTableName="DataTableQueryTemplate" msprop:Generator_RowChangedName="DataTableQueryTemplateRowChanged" msprop:Generator_RowEvArgName="DataTableQueryTemplateRowChangeEvent" msprop:Generator_RowClassName="DataTableQueryTemplateRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TemplateName" msprop:Generator_ColumnVarNameInTable="columnTemplateName" msprop:Generator_ColumnPropNameInRow="TemplateName" msprop:Generator_ColumnPropNameInTable="TemplateNameColumn" msprop:Generator_UserColumnName="TemplateName" type="xs:string" minOccurs="0" />
+              <xs:element name="TemplateIndex" msprop:Generator_ColumnVarNameInTable="columnTemplateIndex" msprop:Generator_ColumnPropNameInRow="TemplateIndex" msprop:Generator_ColumnPropNameInTable="TemplateIndexColumn" msprop:Generator_UserColumnName="TemplateIndex" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

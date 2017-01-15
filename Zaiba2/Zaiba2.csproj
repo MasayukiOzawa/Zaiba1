@@ -48,6 +48,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\BaseQuery.cs" />
+    <Compile Include="DataSetQueryTemplate.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetQueryTemplate.xsd</DependentUpon>
+    </Compile>
     <Compile Include="frmSessionQuery.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,6 +82,17 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="DataSetQueryTemplate.xsc">
+      <DependentUpon>DataSetQueryTemplate.xsd</DependentUpon>
+    </None>
+    <None Include="DataSetQueryTemplate.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetQueryTemplate.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSetQueryTemplate.xss">
+      <DependentUpon>DataSetQueryTemplate.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
