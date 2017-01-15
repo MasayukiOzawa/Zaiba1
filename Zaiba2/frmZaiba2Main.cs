@@ -49,7 +49,7 @@ namespace Zaiba2
                     int gridcolindex = dataGridQueryResult.FirstDisplayedScrollingColumnIndex;
 
                     sda.Fill(dt);
-                    lblDataGetTime.Text = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss.fff");
+                    lblDataGetTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
                     if (dt.Rows.Count != 0 || chkContinue.Checked == false)
                     {
                         dataGridQueryResult.DataSource = null;
@@ -65,8 +65,9 @@ namespace Zaiba2
                     }
                     else
                     {
-                        lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss.fff");
+                        lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
                         btnStart.Enabled = true;
+                        lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
                         lblStatus.Text = "停止";
                         timerQuery.Stop();
                     }
@@ -82,8 +83,8 @@ namespace Zaiba2
         private void btnStart_Click(object sender, EventArgs e)
         {
             btnStart.Enabled = false;
-            lblStartTime.Text =  DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss.fff");
-            lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss.fff");
+            lblStartTime.Text =  DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+            lblEndTime.Text = "";
             SetGrid(sender, e);
             timerQuery.Interval = int.Parse(txtInterval.Text);
             timerQuery.Start();
@@ -92,6 +93,7 @@ namespace Zaiba2
         private void btnStop_Click(object sender, EventArgs e)
         {
             btnStart.Enabled = true;
+            lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
             lblStatus.Text = "停止";
             timerQuery.Stop();
         }
