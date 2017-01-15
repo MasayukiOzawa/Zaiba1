@@ -30,8 +30,7 @@ namespace Zaiba2
                     }
                 }catch(SqlException e)
                 {
-                    MessageBox.Show("セッションのクエリ取得でエラーが発生しました。");
-
+                    MessageBox.Show(String.Format("セッションのクエリ取得でエラーが発生しました。\r\n{0}", e.Message));
                 }
             }
         }
