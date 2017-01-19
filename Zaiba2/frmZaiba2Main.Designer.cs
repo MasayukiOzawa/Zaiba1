@@ -147,6 +147,7 @@
             this.dataGridQueryResult.Size = new System.Drawing.Size(1289, 240);
             this.dataGridQueryResult.TabIndex = 7;
             this.dataGridQueryResult.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridQueryResult_CellClick);
+            this.dataGridQueryResult.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridQueryResult_DataError);
             // 
             // timerQuery
             // 

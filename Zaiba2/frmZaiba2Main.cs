@@ -74,20 +74,31 @@ namespace Zaiba2
                 }
 
             }
-            catch (SqlException ex){
-                timerQuery.Stop();
-                MessageBox.Show(String.Format("セッションのクエリ取得でエラーが発生しました。\r\n{0}", ex.Message));
+            catch{
+                throw;
             }
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            btnStart.Enabled = false;
-            lblStartTime.Text =  DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
-            lblEndTime.Text = "";
-            SetGrid(sender, e);
-            timerQuery.Interval = int.Parse(txtInterval.Text);
-            timerQuery.Start();
+            try {
+                btnStart.Enabled = false;
+                lblStartTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+                lblEndTime.Text = "";
+
+                // タイマーが起動する前の初回実行を明示的に実行
+                SetGrid(sender, e);
+
+                // タイマーを起動
+                timerQuery.Interval = int.Parse(txtInterval.Text);
+                timerQuery.Start();
+            }
+            catch(Exception ex)
+            {
+                timerQuery.Stop();
+                MessageBox.Show(String.Format("エラーが発生しました。\r\n{0}", ex.Message));
+
+            }
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -126,8 +137,15 @@ namespace Zaiba2
                     if (_grid.Columns[i].HeaderText == "session_id" || _grid.Columns[i].HeaderText == "sessionid")
                     {
                         _sessionid = int.Parse(_grid.CurrentRow.Cells[0].Value.ToString());
-                        Form SessoinQuery = new frmSessionQuery(_sessionid);
-                        SessoinQuery.Show();
+                        try
+                        {
+                            Form SessoinQuery = new frmSessionQuery(_sessionid);
+                            SessoinQuery.Show();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(String.Format("セッションのクエリ取得でエラーが発生しました。\r\n{0}", ex.Message));
+                        }
                     }
                 }
             }
@@ -138,6 +156,11 @@ namespace Zaiba2
             ComboBox _combo = (ComboBox)sender;
             BaseQuery query = new BaseQuery();
             txtQuery.Text = query.QueryTemplate[int.Parse(_combo.SelectedValue.ToString())];
+        }
+
+        private void dataGridQueryResult_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            dataGridQueryResult.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = e.Exception.Message;
         }
     }
 }

@@ -28,9 +28,9 @@ namespace Zaiba2
                     {
                         txtQuerySession.Text = dr[2].ToString();
                     }
-                }catch(SqlException e)
+                }catch(SqlException)
                 {
-                    MessageBox.Show(String.Format("セッションのクエリ取得でエラーが発生しました。\r\n{0}", e.Message));
+                    throw;
                 }
             }
         }
