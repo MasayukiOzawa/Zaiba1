@@ -9,18 +9,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Timers;
 using Zaiba2.Common;
 
 namespace Zaiba2
 {
     public partial class frmZaiba2Main : Form
     {
-        string constring = ConfigurationManager.ConnectionStrings["Zaiba2.Properties.Settings.DBConnection"].ConnectionString;
+        string constring = string.Empty;
         int commandtimeout = Properties.Settings.Default.CommandTimeout;
+        System.Timers.Timer timer = new System.Timers.Timer();
 
         public frmZaiba2Main()
         {
             InitializeComponent();
+            txtConnectionString.Text = ConfigurationManager.ConnectionStrings["Zaiba2.Properties.Settings.DBConnection"].ConnectionString;
 
             BaseQuery query = new BaseQuery();
             txtQuery.Text = query.QueryTemplate[0];
@@ -31,60 +34,75 @@ namespace Zaiba2
             }
         }
 
-        public void SetGrid(object sender, EventArgs e)
+        delegate void SetGridDelegate(object sender, EventArgs e);
+
+        private void SetGrid(object sender, EventArgs e)
         {
             string CmdString = string.Empty;
-
-            try
+            if (InvokeRequired)
             {
-                using (SqlConnection con = new SqlConnection(constring))
+                Invoke(new SetGridDelegate(SetGrid), sender, e);
+                return;
+            }
+
+                try
                 {
-                    lblStatus.Text = "開始";
-                    SqlCommand cmd = new SqlCommand(txtQuery.Text, con);
-                    cmd.CommandTimeout = commandtimeout;
-                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-
-                    int gridrowindex = dataGridQueryResult.FirstDisplayedScrollingRowIndex;
-                    int gridcolindex = dataGridQueryResult.FirstDisplayedScrollingColumnIndex;
-
-                    sda.Fill(dt);
-                    lblDataGetTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
-                    if (dt.Rows.Count != 0 || chkContinue.Checked == false)
+                    using (SqlConnection con = new SqlConnection(constring))
                     {
-                        dataGridQueryResult.DataSource = null;
-                        dataGridQueryResult.DataSource = dt;
-                        if (dataGridQueryResult.RowCount >= gridrowindex && gridrowindex > 0)
+                        SqlCommand cmd = new SqlCommand(txtQuery.Text, con);
+                        cmd.CommandTimeout = commandtimeout;
+                        SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+
+                        int gridrowindex = dataGridQueryResult.FirstDisplayedScrollingRowIndex;
+                        int gridcolindex = dataGridQueryResult.FirstDisplayedScrollingColumnIndex;
+
+                        sda.Fill(dt);
+                        lblDataGetTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+
+                        if (dt.Rows.Count != 0 || chkContinue.Checked == false)
                         {
-                            dataGridQueryResult.FirstDisplayedScrollingRowIndex = gridrowindex;
+                            dataGridQueryResult.DataSource = null;
+                            dataGridQueryResult.DataSource = dt;
+                            if (dataGridQueryResult.RowCount >= gridrowindex && gridrowindex > 0)
+                            {
+                                dataGridQueryResult.FirstDisplayedScrollingRowIndex = gridrowindex;
+                            }
+                            if (dataGridQueryResult.ColumnCount >= gridcolindex && gridcolindex > 0)
+                            {
+                                dataGridQueryResult.FirstDisplayedScrollingColumnIndex = gridcolindex;
+                            }
                         }
-                        if (dataGridQueryResult.ColumnCount >= gridcolindex && gridcolindex > 0)
+                        else
                         {
-                            dataGridQueryResult.FirstDisplayedScrollingColumnIndex = gridcolindex;
+                            lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+                            btnStart.Enabled = true;
+                            lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+                            lblStatus.Text = "停止";
+                            timerQuery.Stop();
+                            //timer.Stop();
                         }
                     }
-                    else
-                    {
-                        lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
-                        btnStart.Enabled = true;
-                        lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
-                        lblStatus.Text = "停止";
-                        timerQuery.Stop();
-                    }
+
                 }
-
-            }
-            catch{
-                throw;
-            }
+                catch
+                {
+                    throw;
+                }
+            
         }
+
 
         private void btnStart_Click(object sender, EventArgs e)
         {
             try {
+                lblStatus.Text = "取得中";
                 btnStart.Enabled = false;
                 lblStartTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
                 lblEndTime.Text = "";
+
+                // 接続文字列を設定
+                constring = txtConnectionString.Text;
 
                 // タイマーが起動する前の初回実行を明示的に実行
                 SetGrid(sender, e);
@@ -92,10 +110,18 @@ namespace Zaiba2
                 // タイマーを起動
                 timerQuery.Interval = int.Parse(txtInterval.Text);
                 timerQuery.Start();
+
+                
+                //timer.Elapsed += new ElapsedEventHandler(SetGrid);
+                //timer.Interval = int.Parse(txtInterval.Text);
+                //timer.Start();
+                
+
             }
             catch(Exception ex)
             {
                 timerQuery.Stop();
+                //timer.Stop();
                 MessageBox.Show(String.Format("エラーが発生しました。\r\n{0}", ex.Message));
 
             }
@@ -107,6 +133,7 @@ namespace Zaiba2
             lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
             lblStatus.Text = "停止";
             timerQuery.Stop();
+            //timer.Stop();
         }
 
         private void txtAllSelect(object sender, KeyEventArgs e) {
@@ -139,8 +166,10 @@ namespace Zaiba2
                         _sessionid = int.Parse(_grid.CurrentRow.Cells[0].Value.ToString());
                         try
                         {
-                            Form SessoinQuery = new frmSessionQuery(_sessionid);
-                            SessoinQuery.Show();
+                            frmSessionQuery SessionQuery = new frmSessionQuery();
+                            SessionQuery.constring = txtConnectionString.Text;
+                            SessionQuery.GetSessionQuery(_sessionid);
+                            SessionQuery.Show();
                         }
                         catch (Exception ex)
                         {

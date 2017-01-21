@@ -34,7 +34,6 @@
             this.lblInterval = new System.Windows.Forms.Label();
             this.txtInterval = new System.Windows.Forms.TextBox();
             this.lblIntervalms = new System.Windows.Forms.Label();
-            this.lblStatus = new System.Windows.Forms.Label();
             this.txtQuery = new System.Windows.Forms.TextBox();
             this.dataGridQueryResult = new System.Windows.Forms.DataGridView();
             this.timerQuery = new System.Windows.Forms.Timer(this.components);
@@ -49,6 +48,9 @@
             this.comboQueryTemplate = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panelTemplate = new System.Windows.Forms.Panel();
+            this.txtConnectionString = new System.Windows.Forms.TextBox();
+            this.lblConnectionString = new System.Windows.Forms.Label();
+            this.lblStatus = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridQueryResult)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSetQueryTemplate)).BeginInit();
             this.panelTemplate.SuspendLayout();
@@ -105,16 +107,6 @@
             this.lblIntervalms.Size = new System.Drawing.Size(27, 20);
             this.lblIntervalms.TabIndex = 4;
             this.lblIntervalms.Text = "ms";
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.Font = new System.Drawing.Font("メイリオ", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.lblStatus.Location = new System.Drawing.Point(106, 13);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(138, 72);
-            this.lblStatus.TabIndex = 5;
-            this.lblStatus.Text = "停止";
-            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtQuery
             // 
@@ -261,11 +253,40 @@
             this.panelTemplate.Size = new System.Drawing.Size(295, 72);
             this.panelTemplate.TabIndex = 15;
             // 
+            // txtConnectionString
+            // 
+            this.txtConnectionString.Location = new System.Drawing.Point(942, 122);
+            this.txtConnectionString.Name = "txtConnectionString";
+            this.txtConnectionString.Size = new System.Drawing.Size(287, 19);
+            this.txtConnectionString.TabIndex = 16;
+            // 
+            // lblConnectionString
+            // 
+            this.lblConnectionString.AutoSize = true;
+            this.lblConnectionString.Location = new System.Drawing.Point(942, 107);
+            this.lblConnectionString.Name = "lblConnectionString";
+            this.lblConnectionString.Size = new System.Drawing.Size(65, 12);
+            this.lblConnectionString.TabIndex = 17;
+            this.lblConnectionString.Text = "接続文字列";
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("メイリオ", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.lblStatus.Location = new System.Drawing.Point(108, 13);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(126, 72);
+            this.lblStatus.TabIndex = 18;
+            this.lblStatus.Text = "停止";
+            // 
             // frmZaiba2Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1318, 465);
+            this.Controls.Add(this.lblStatus);
+            this.Controls.Add(this.lblConnectionString);
+            this.Controls.Add(this.txtConnectionString);
             this.Controls.Add(this.panelTemplate);
             this.Controls.Add(this.chkContinue);
             this.Controls.Add(this.lblDataGetTime);
@@ -276,7 +297,6 @@
             this.Controls.Add(this.lblStartTimeTitle);
             this.Controls.Add(this.dataGridQueryResult);
             this.Controls.Add(this.txtQuery);
-            this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.lblIntervalms);
             this.Controls.Add(this.txtInterval);
             this.Controls.Add(this.lblInterval);
@@ -301,7 +321,6 @@
         private System.Windows.Forms.Label lblInterval;
         private System.Windows.Forms.TextBox txtInterval;
         private System.Windows.Forms.Label lblIntervalms;
-        private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.TextBox txtQuery;
         private System.Windows.Forms.DataGridView dataGridQueryResult;
         private System.Windows.Forms.Timer timerQuery;
@@ -316,6 +335,9 @@
         private System.Windows.Forms.ComboBox comboQueryTemplate;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panelTemplate;
+        private System.Windows.Forms.TextBox txtConnectionString;
+        private System.Windows.Forms.Label lblConnectionString;
+        private System.Windows.Forms.Label lblStatus;
     }
 }
 

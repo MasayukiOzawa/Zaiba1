@@ -7,16 +7,16 @@ namespace Zaiba2
 {
     public partial class frmSessionQuery : Form
     {
-        string constring = ConfigurationManager.ConnectionStrings["Zaiba2.Properties.Settings.DBConnection"].ConnectionString;
         int commandtimeout = Properties.Settings.Default.CommandTimeout;
+        public string constring { get; set; }
 
-        public frmSessionQuery(int SessionID)
+        public void GetSessionQuery(int SessionID)
         {
             InitializeComponent();
             lblQuerySessionID.Text = SessionID.ToString();
 
             string CmdString = string.Empty;
-            using (SqlConnection con = new SqlConnection(constring))
+            using (SqlConnection con = new SqlConnection(this.constring))
             {
                 try
                 {
@@ -43,5 +43,7 @@ namespace Zaiba2
                 _txt.SelectAll();
             }
         }
+
+
     }
 }
