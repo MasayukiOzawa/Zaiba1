@@ -51,6 +51,7 @@
             this.txtConnectionString = new System.Windows.Forms.TextBox();
             this.lblConnectionString = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
+            this.lblVersion = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridQueryResult)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSetQueryTemplate)).BeginInit();
             this.panelTemplate.SuspendLayout();
@@ -144,7 +145,7 @@
             // timerQuery
             // 
             this.timerQuery.Interval = 1000;
-            this.timerQuery.Tick += new System.EventHandler(this.SetGrid);
+            this.timerQuery.Tick += new System.EventHandler(this.GetData);
             // 
             // lblStartTimeTitle
             // 
@@ -279,11 +280,20 @@
             this.lblStatus.TabIndex = 18;
             this.lblStatus.Text = "停止";
             // 
+            // lblVersion
+            // 
+            this.lblVersion.Font = new System.Drawing.Font("メイリオ", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.lblVersion.Location = new System.Drawing.Point(942, 152);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(361, 39);
+            this.lblVersion.TabIndex = 19;
+            // 
             // frmZaiba2Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1318, 465);
+            this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.lblConnectionString);
             this.Controls.Add(this.txtConnectionString);
@@ -338,6 +348,7 @@
         private System.Windows.Forms.TextBox txtConnectionString;
         private System.Windows.Forms.Label lblConnectionString;
         private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.Label lblVersion;
     }
 }
 

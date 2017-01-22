@@ -34,64 +34,87 @@ namespace Zaiba2
             }
         }
 
-        delegate void SetGridDelegate(object sender, EventArgs e);
 
-        private void SetGrid(object sender, EventArgs e)
+        private void GetData(object sender, EventArgs e)
         {
-            string CmdString = string.Empty;
+            using (SqlConnection con = new SqlConnection(constring))
+            {
+                SqlCommand cmd = new SqlCommand(txtQuery.Text, con);
+                cmd.CommandTimeout = commandtimeout;
+                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+
+                sda.Fill(dt);
+                SetGrid(ref dt);
+            }
+        }
+
+        delegate void SetGridDelegate(ref DataTable dt);
+
+        private void SetGrid(ref DataTable dt)
+        {
             if (InvokeRequired)
             {
-                Invoke(new SetGridDelegate(SetGrid), sender, e);
+                Invoke(new SetGridDelegate(SetGrid),dt);
                 return;
             }
 
-                try
+            try
+            {
+                int gridrowindex = dataGridQueryResult.FirstDisplayedScrollingRowIndex;
+                int gridcolindex = dataGridQueryResult.FirstDisplayedScrollingColumnIndex;
+
+                lblDataGetTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+
+                if (dt.Rows.Count != 0 || chkContinue.Checked == false)
                 {
-                    using (SqlConnection con = new SqlConnection(constring))
+                    dataGridQueryResult.DataSource = null;
+                    dataGridQueryResult.DataSource = dt;
+                    if (dataGridQueryResult.RowCount >= gridrowindex && gridrowindex > 0)
                     {
-                        SqlCommand cmd = new SqlCommand(txtQuery.Text, con);
-                        cmd.CommandTimeout = commandtimeout;
-                        SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                        DataTable dt = new DataTable();
-
-                        int gridrowindex = dataGridQueryResult.FirstDisplayedScrollingRowIndex;
-                        int gridcolindex = dataGridQueryResult.FirstDisplayedScrollingColumnIndex;
-
-                        sda.Fill(dt);
-                        lblDataGetTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
-
-                        if (dt.Rows.Count != 0 || chkContinue.Checked == false)
-                        {
-                            dataGridQueryResult.DataSource = null;
-                            dataGridQueryResult.DataSource = dt;
-                            if (dataGridQueryResult.RowCount >= gridrowindex && gridrowindex > 0)
-                            {
-                                dataGridQueryResult.FirstDisplayedScrollingRowIndex = gridrowindex;
-                            }
-                            if (dataGridQueryResult.ColumnCount >= gridcolindex && gridcolindex > 0)
-                            {
-                                dataGridQueryResult.FirstDisplayedScrollingColumnIndex = gridcolindex;
-                            }
-                        }
-                        else
-                        {
-                            lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
-                            btnStart.Enabled = true;
-                            lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
-                            lblStatus.Text = "停止";
-                            timerQuery.Stop();
-                            //timer.Stop();
-                        }
+                        dataGridQueryResult.FirstDisplayedScrollingRowIndex = gridrowindex;
                     }
-
+                    if (dataGridQueryResult.ColumnCount >= gridcolindex && gridcolindex > 0)
+                    {
+                        dataGridQueryResult.FirstDisplayedScrollingColumnIndex = gridcolindex;
+                    }
                 }
-                catch
+                else
                 {
-                    throw;
+                    lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+                    lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+                    lblStatus.Text = "停止";
+
+                    btnStart.Enabled = true;
+
+                    TimerStop();
                 }
+
+            }
+            catch
+            {
+                throw;
+            }
             
         }
 
+        private void TimerStart()
+        {
+            // タイマーを起動
+            //timerQuery.Interval = int.Parse(txtInterval.Text);
+            //timerQuery.Start();
+
+
+            timer.Elapsed += new ElapsedEventHandler(GetData);
+            timer.Interval = int.Parse(txtInterval.Text);
+            timer.Start();
+
+        }
+        private void TimerStop()
+        {
+            //timerQuery.Stop();
+            timer.Stop();
+        }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
@@ -104,36 +127,50 @@ namespace Zaiba2
                 // 接続文字列を設定
                 constring = txtConnectionString.Text;
 
+                // バージョン情報を取得
+                SetVersionInfo();
+
                 // タイマーが起動する前の初回実行を明示的に実行
-                SetGrid(sender, e);
+                GetData(sender, e);
 
-                // タイマーを起動
-                timerQuery.Interval = int.Parse(txtInterval.Text);
-                timerQuery.Start();
-
-                
-                //timer.Elapsed += new ElapsedEventHandler(SetGrid);
-                //timer.Interval = int.Parse(txtInterval.Text);
-                //timer.Start();
-                
+                TimerStart();
 
             }
             catch(Exception ex)
             {
-                timerQuery.Stop();
-                //timer.Stop();
+                TimerStop();
                 MessageBox.Show(String.Format("エラーが発生しました。\r\n{0}", ex.Message));
 
             }
         }
 
+        private void SetVersionInfo()
+        {
+            using (SqlConnection con = new SqlConnection(this.constring))
+            {
+                try
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand("SELECT @@VERSION AS C1", con);
+                    cmd.CommandTimeout = commandtimeout;
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        lblVersion.Text = dr[0].ToString();
+                    }
+                }
+                catch (SqlException)
+                {
+                    throw;
+                }
+            }
+        }
         private void btnStop_Click(object sender, EventArgs e)
         {
             btnStart.Enabled = true;
             lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
             lblStatus.Text = "停止";
-            timerQuery.Stop();
-            //timer.Stop();
+            TimerStop();
         }
 
         private void txtAllSelect(object sender, KeyEventArgs e) {
