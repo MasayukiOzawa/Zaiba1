@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Timers;
 using Zaiba2.Common;
+using System.Xml.Serialization;
+using System.IO;
+
 
 namespace Zaiba2
 {
@@ -19,19 +16,30 @@ namespace Zaiba2
         string constring = string.Empty;
         int commandtimeout = Properties.Settings.Default.CommandTimeout;
         System.Timers.Timer timer = new System.Timers.Timer();
+        XMLBaseQuery model;
 
         public frmZaiba2Main()
         {
             InitializeComponent();
             txtConnectionString.Text = ConfigurationManager.ConnectionStrings["Zaiba2.Properties.Settings.DBConnection"].ConnectionString;
+            XmlSerializer serializer = new XmlSerializer(typeof(XMLBaseQuery));
 
-            BaseQuery query = new BaseQuery();
-            txtQuery.Text = query.QueryTemplate[0];
-            Dictionary<String, int> TempLateList = query.GetTemplateList();
-            foreach(var _Template in TempLateList.Keys)
+            FileStream fs = new FileStream(@".\QueryTemplate.xml", FileMode.Open);
+
+            model = (XMLBaseQuery)serializer.Deserialize(fs);
+            foreach (Query query in model.Query)
             {
-                dataSetQueryTemplate.DataTableQueryTemplate.AddDataTableQueryTemplateRow(_Template,TempLateList[_Template] );
+                dataSetQueryTemplate.DataTableQueryTemplate.AddDataTableQueryTemplateRow(query.name, query.index);
             }
+
+            txtQuery.Text = model.Query[0].sql;
+            //BaseQuery query = new BaseQuery();
+            //txtQuery.Text = query.QueryTemplate[0];
+            //Dictionary<String, int> TempLateList = query.GetTemplateList();
+            //foreach(var _Template in TempLateList.Keys)
+            //{
+            //    dataSetQueryTemplate.DataTableQueryTemplate.AddDataTableQueryTemplateRow(_Template,TempLateList[_Template] );
+            //}
         }
 
 
@@ -55,7 +63,7 @@ namespace Zaiba2
         {
             if (InvokeRequired)
             {
-                Invoke(new SetGridDelegate(SetGrid),dt);
+                Invoke(new SetGridDelegate(SetGrid), dt);
                 return;
             }
 
@@ -95,7 +103,7 @@ namespace Zaiba2
             {
                 throw;
             }
-            
+
         }
 
         private void TimerStart()
@@ -118,7 +126,8 @@ namespace Zaiba2
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            try {
+            try
+            {
                 lblStatus.Text = "取得中";
                 btnStart.Enabled = false;
                 lblStartTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
@@ -136,7 +145,7 @@ namespace Zaiba2
                 TimerStart();
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TimerStop();
                 MessageBox.Show(String.Format("エラーが発生しました。\r\n{0}", ex.Message));
@@ -173,21 +182,15 @@ namespace Zaiba2
             TimerStop();
         }
 
-        private void txtAllSelect(object sender, KeyEventArgs e) {
-            if (e.Control && e.KeyCode == Keys.A) {
+        private void txtAllSelect(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.A)
+            {
                 TextBox _txt = (TextBox)sender;
                 _txt.SelectAll();
             }
         }
 
-
-        private void SetQueryText(object sender, EventArgs e)
-        {
-            RadioButton _radio = (RadioButton)sender;
-
-            BaseQuery query = new BaseQuery();
-            txtQuery.Text = query.QueryTemplate[int.Parse(_radio.Tag.ToString())];
-        }
 
         private void dataGridQueryResult_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -220,8 +223,9 @@ namespace Zaiba2
         private void comboQueryTemplate_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox _combo = (ComboBox)sender;
-            BaseQuery query = new BaseQuery();
-            txtQuery.Text = query.QueryTemplate[int.Parse(_combo.SelectedValue.ToString())];
+            //BaseQuery query = new BaseQuery();
+            txtQuery.Text = model.Query[int.Parse(_combo.SelectedValue.ToString())].sql;
+            //txtQuery.Text = query.QueryTemplate[int.Parse(_combo.SelectedValue.ToString())];
         }
 
         private void dataGridQueryResult_DataError(object sender, DataGridViewDataErrorEventArgs e)
