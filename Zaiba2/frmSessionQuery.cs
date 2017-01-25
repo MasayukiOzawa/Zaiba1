@@ -9,11 +9,13 @@ namespace Zaiba2
     {
         int commandtimeout = Properties.Settings.Default.CommandTimeout;
         public string constring { get; set; }
+        int _sessionid;
 
         public void GetSessionQuery(int SessionID)
         {
             InitializeComponent();
-            lblQuerySessionID.Text = SessionID.ToString();
+            this._sessionid = SessionID;
+            lblQuerySessionID.Text = this._sessionid.ToString();
 
             string CmdString = string.Empty;
             using (SqlConnection con = new SqlConnection(this.constring))
@@ -21,16 +23,16 @@ namespace Zaiba2
                 try
                 {
                     con.Open();
-                    SqlCommand cmd = new SqlCommand(String.Format("DBCC INPUTBUFFER({0})", SessionID.ToString()), con);
+                    SqlCommand cmd = new SqlCommand(String.Format("DBCC INPUTBUFFER({0})", this._sessionid.ToString()), con);
                     cmd.CommandTimeout = commandtimeout;
                     SqlDataReader dr = cmd.ExecuteReader();
                     while (dr.Read())
                     {
                         txtQuerySession.Text = dr[2].ToString();
                     }
-                }catch(SqlException)
+                }catch(SqlException ex)
                 {
-                    throw;
+                    MessageBox.Show(String.Format("セッションのクエリ取得でエラーが発生しました。\r\n{0}", ex.Message));
                 }
             }
         }
@@ -44,6 +46,26 @@ namespace Zaiba2
             }
         }
 
+        private void SessionKill(object sender, EventArgs e)
+        {
+            string CmdString = string.Empty;
+            using (SqlConnection con = new SqlConnection(this.constring))
+            {
+                try
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand(String.Format("kill {0}", this._sessionid.ToString()), con);
+                    cmd.CommandTimeout = commandtimeout;
+                    cmd.ExecuteNonQuery();
 
+                    MessageBox.Show(String.Format("セッション ID {0} を終了しました", this._sessionid.ToString()));
+                    this.Close();
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show(String.Format("セッションの終了でエラーが発生しました。\r\n{0}", ex.Message));
+                }
+            }
+        }
     }
 }

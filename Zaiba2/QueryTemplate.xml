@@ -2,6 +2,62 @@
 <BaseQuery>
   <Query>
     <index>0</index>
+    <name>利用状況モニター (SQL Server/SQL Database)</name>
+    <sql>
+    <![CDATA[
+
+WITH profiled_sessions as (
+	SELECT DISTINCT session_id profiled_session_id from sys.dm_exec_query_profiles
+)
+SELECT 
+   [Session ID]    = s.session_id, 
+   [User Process]  = CONVERT(CHAR(1), s.is_user_process),
+   [Login]         = s.login_name,   
+   [Database]      = case when p.dbid=0 then N'' else ISNULL(db_name(p.dbid),N'') end, 
+   [Task State]    = ISNULL(t.task_state, N''), 
+   [Command]       = ISNULL(r.command, N''), 
+   [Application]   = ISNULL(s.program_name, N''), 
+   [Blocked By]    = ISNULL(CONVERT (varchar, w.blocking_session_id), ''),
+   [Head Blocker]  = 
+        CASE 
+            -- session has an active request, is blocked, but is blocking others or session is idle but has an open tran and is blocking others
+            WHEN r2.session_id IS NOT NULL AND (r.blocking_session_id = 0 OR r.session_id IS NULL) THEN '1' 
+            -- session is either not blocking someone, or is blocking someone but is blocked by another party
+            ELSE ''
+        END, 
+   [Wait Time (ms)]     = ISNULL(w.wait_duration_ms, 0),
+   [Wait Type]     = ISNULL(w.wait_type, N''),
+   [Wait Resource] = ISNULL(w.resource_description, N''), 
+   [Total CPU (ms)] = s.cpu_time, 
+   [Total Physical I/O (MB)]   = (s.reads + s.writes) * 8 / 1024, 
+   [Memory Use (KB)]  = s.memory_usage * (8192 / 1024), 
+   [Open Transactions] = ISNULL(r.open_transaction_count,0), 
+   [Login Time]    = s.login_time, 
+   [Last Request Start Time] = s.last_request_start_time,
+   [Host Name]     = ISNULL(s.host_name, N''),
+   [Net Address]   = ISNULL(c.client_net_address, N''), 
+   [Execution Context ID] = ISNULL(t.exec_context_id, 0),
+   [Request ID] = ISNULL(r.request_id, 0),
+   [Profiled Session Id] = profiled_session_id
+FROM sys.dm_exec_sessions s LEFT OUTER JOIN sys.dm_exec_connections c ON (s.session_id = c.session_id)
+LEFT OUTER JOIN sys.dm_exec_requests r ON (s.session_id = r.session_id)
+LEFT OUTER JOIN sys.dm_os_tasks t ON (r.session_id = t.session_id AND r.request_id = t.request_id)
+LEFT OUTER JOIN 
+(
+    SELECT *, ROW_NUMBER() OVER (PARTITION BY waiting_task_address ORDER BY wait_duration_ms DESC) AS row_num
+    FROM sys.dm_os_waiting_tasks 
+) w ON (t.task_address = w.waiting_task_address) AND w.row_num = 1
+LEFT OUTER JOIN sys.dm_exec_requests r2 ON (s.session_id = r2.blocking_session_id)
+LEFT OUTER JOIN sys.sysprocesses p ON (s.session_id = p.spid)
+LEFT OUTER JOIN profiled_sessions ON profiled_session_id = s.session_id
+WHERE s.session_id > 50
+ORDER BY s.session_id;
+    ]]>
+    </sql>
+  </Query>
+
+  <Query>
+    <index>1</index>
     <name>クエリ実行状況の取得 (SQL Server)</name>
     <sql>
     <![CDATA[
@@ -30,40 +86,6 @@ SELECT
 		WHEN 0 THEN NULL
 		ELSE DATEADD(ms, qp.close_time, @starttime) 
 	END AS CloseTime,
-	qp.elapsed_time_ms,
-	qp.cpu_time_ms
-FROM
-    sys.dm_exec_query_profiles qp
-    CROSS APPLY
-    sys.dm_exec_sql_text (sql_handle) t
-    CROSS APPLY
-    sys.dm_exec_query_plan(plan_handle) p
-    LEFT JOIN
-    sys.dm_os_tasks ot
-ON
-    qp.task_address = ot.task_address
-WHERE
-	qp.session_id <> @@SPID
-ORDER BY
-    session_id, request_id, node_id, thread_id
-    ]]>
-    </sql>
-  </Query>
-  <Query>
-    <index>1</index>
-    <name>クエリ実行状況の取得 (SQL Database)</name>
-    <sql>
-    <![CDATA[
-SELECT
-    qp.session_id, 
-	DB_NAME(qp.database_id) AS db_name,
-    qp.request_id, 
-    ot.task_state,
-    qp.physical_operator_name, 
-    qp.node_id, 
-    qp.thread_id, 
-    qp.row_count,
-    qp.estimate_row_count,
 	qp.elapsed_time_ms,
 	qp.cpu_time_ms
 FROM
@@ -117,8 +139,43 @@ OPTION (RECOMPILE)
     ]]>
     </sql>
   </Query>
+
   <Query>
     <index>3</index>
+    <name>クエリ実行状況の取得 (SQL Database)</name>
+    <sql>
+    <![CDATA[
+SELECT
+    qp.session_id, 
+	DB_NAME(qp.database_id) AS db_name,
+    qp.request_id, 
+    ot.task_state,
+    qp.physical_operator_name, 
+    qp.node_id, 
+    qp.thread_id, 
+    qp.row_count,
+    qp.estimate_row_count,
+	qp.elapsed_time_ms,
+	qp.cpu_time_ms
+FROM
+    sys.dm_exec_query_profiles qp
+    CROSS APPLY
+    sys.dm_exec_sql_text (sql_handle) t
+    CROSS APPLY
+    sys.dm_exec_query_plan(plan_handle) p
+    LEFT JOIN
+    sys.dm_os_tasks ot
+ON
+    qp.task_address = ot.task_address
+WHERE
+	qp.session_id <> @@SPID
+ORDER BY
+    session_id, request_id, node_id, thread_id
+    ]]>
+    </sql>
+  </Query>
+  <Query>
+    <index>4</index>
     <name>ファイル I/O の取得 (SQL Database)</name>
     <sql>
     <![CDATA[
@@ -147,81 +204,6 @@ FROM
 	ON
 	database_files.file_id  = fn_virtualfilestats.FileId
 OPTION (RECOMPILE)
-    ]]>
-    </sql>
-  </Query>
-  <Query>
-    <index>4</index>
-    <name>利用状況モニター (SQL Server/SQL Database)</name>
-    <sql>
-    <![CDATA[
-SELECT
-    es.session_id,
-    er.request_id,
-    er.start_time,
-    es.host_name,
-    es.program_name,
-    es.login_time,
-    es.login_name,
-    es.client_version,
-    es.client_interface_name,
-    es.last_request_start_time,
-    es.last_request_end_time,
-    er.command,
-    es.status,
-    er.wait_type,
-    er.last_wait_type,
-    er.wait_resource,
-    er.wait_time,
-    es.total_elapsed_time,
-    er.total_elapsed_time AS exec_requests_total_elapsed_time,
-    es.cpu_time,
-    er.cpu_time AS exec_requests_cpu_time,
-    er.database_id,
-    DB_NAME(DB_ID()) AS database_name,
-    er.user_id,
-    er.open_resultset_count,
-    er.open_resultset_count,
-    er.percent_complete,
-    er.estimated_completion_time,
-    es.memory_usage,
-    es.total_scheduled_time,
-    es.reads,
-    er.reads AS exec_requests_reads,
-    es.writes,
-    er.writes AS exec_requests_writes,
-    es.logical_reads,
-    er.logical_reads AS exec_requests_logical_reads,
-    es.row_count,
-    er.row_count AS exec_requests_row_count,
-    er.granted_query_memory,
-    er.scheduler_id,
-    er.transaction_isolation_level,
-    er.executing_managed_code,
-    es.lock_timeout,
-    er.lock_timeout as exec_requests_lock_timeout,
-    es.deadlock_priority,
-    er.deadlock_priority AS exec_requests_deadlock_priority
-FROM
-    sys.dm_exec_sessions es
-    LEFT JOIN
-    sys.dm_exec_requests er
-    ON
-    es.session_id = er.session_id
-    LEFT JOIN
-    (SELECT * FROM sys.dm_exec_connections WHERE most_recent_sql_handle <> 0x0) AS ec
-    ON
-    es.session_id = ec.session_id
-    OUTER APPLY
-    sys.dm_exec_sql_text(er.sql_handle) AS er_text
-    OUTER APPLY
-    sys.dm_exec_sql_text(ec.most_recent_sql_handle) AS ec_text
-WHERE
-	es.session_id > 50
-	AND
-    es.session_id <> @@SPID
-ORDER BY
-    session_id ASC
     ]]>
     </sql>
   </Query>

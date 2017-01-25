@@ -52,6 +52,7 @@
             this.lblConnectionString = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
+            this.chkRunOnce = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridQueryResult)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSetQueryTemplate)).BeginInit();
             this.panelTemplate.SuspendLayout();
@@ -288,11 +289,25 @@
             this.lblVersion.Size = new System.Drawing.Size(361, 39);
             this.lblVersion.TabIndex = 19;
             // 
+            // chkRunOnce
+            // 
+            this.chkRunOnce.AutoSize = true;
+            this.chkRunOnce.Checked = true;
+            this.chkRunOnce.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkRunOnce.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.chkRunOnce.Location = new System.Drawing.Point(14, 169);
+            this.chkRunOnce.Name = "chkRunOnce";
+            this.chkRunOnce.Size = new System.Drawing.Size(135, 22);
+            this.chkRunOnce.TabIndex = 20;
+            this.chkRunOnce.Text = "一度実行し処理停止";
+            this.chkRunOnce.UseVisualStyleBackColor = true;
+            // 
             // frmZaiba2Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1318, 465);
+            this.Controls.Add(this.chkRunOnce);
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.lblConnectionString);
@@ -349,6 +364,7 @@
         private System.Windows.Forms.Label lblConnectionString;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.CheckBox chkRunOnce;
     }
 }
 

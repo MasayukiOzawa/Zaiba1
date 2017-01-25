@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace Zaiba2.Common
 {
@@ -7,7 +8,7 @@ namespace Zaiba2.Common
     public class XMLBaseQuery
     {
         [XmlElement("Query")]
-        public System.Collections.Generic.List<Zaiba2.Common.Query> Query { get; set; }
+        public List<Query> Query { get; set; }
     }
     public class Query
     {

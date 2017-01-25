@@ -7,7 +7,7 @@ using System.Timers;
 using Zaiba2.Common;
 using System.Xml.Serialization;
 using System.IO;
-
+using System.Linq;
 
 namespace Zaiba2
 {
@@ -22,17 +22,21 @@ namespace Zaiba2
         {
             InitializeComponent();
             txtConnectionString.Text = ConfigurationManager.ConnectionStrings["Zaiba2.Properties.Settings.DBConnection"].ConnectionString;
-            XmlSerializer serializer = new XmlSerializer(typeof(XMLBaseQuery));
 
+            XmlSerializer serializer = new XmlSerializer(typeof(XMLBaseQuery));
             FileStream fs = new FileStream(@".\QueryTemplate.xml", FileMode.Open);
 
             model = (XMLBaseQuery)serializer.Deserialize(fs);
+            model.Query.Sort((a, b) => a.index - b.index);
+
             foreach (Query query in model.Query)
             {
                 dataSetQueryTemplate.DataTableQueryTemplate.AddDataTableQueryTemplateRow(query.name, query.index);
             }
 
             txtQuery.Text = model.Query[0].sql;
+            txtInterval.Text = Properties.Settings.Default.InitialInterval.ToString();
+
             //BaseQuery query = new BaseQuery();
             //txtQuery.Text = query.QueryTemplate[0];
             //Dictionary<String, int> TempLateList = query.GetTemplateList();
@@ -47,13 +51,20 @@ namespace Zaiba2
         {
             using (SqlConnection con = new SqlConnection(constring))
             {
-                SqlCommand cmd = new SqlCommand(txtQuery.Text, con);
-                cmd.CommandTimeout = commandtimeout;
-                SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
+                try {
+                    SqlCommand cmd = new SqlCommand(txtQuery.Text, con);
+                    cmd.CommandTimeout = commandtimeout;
+                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
 
-                sda.Fill(dt);
-                SetGrid(ref dt);
+                    sda.Fill(dt);
+                    SetGrid(ref dt);
+
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show(String.Format("データの取得時にエラーが発生しました。\r\n{0}", ex.Message));
+                }
             }
         }
 
@@ -89,7 +100,6 @@ namespace Zaiba2
                 }
                 else
                 {
-                    lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
                     lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
                     lblStatus.Text = "停止";
 
@@ -128,8 +138,8 @@ namespace Zaiba2
         {
             try
             {
-                lblStatus.Text = "取得中";
                 btnStart.Enabled = false;
+                lblStatus.Text = "取得中";
                 lblStartTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
                 lblEndTime.Text = "";
 
@@ -142,7 +152,15 @@ namespace Zaiba2
                 // タイマーが起動する前の初回実行を明示的に実行
                 GetData(sender, e);
 
-                TimerStart();
+                // 連続実行する設定の場合は、タイマーを開始
+                if(chkRunOnce.Checked == false) {
+                    TimerStart();
+                }else
+                {
+                    lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+                    btnStart.Enabled = true;
+                    lblStatus.Text = "停止";
+                }
 
             }
             catch (Exception ex)
@@ -196,12 +214,13 @@ namespace Zaiba2
         {
             DataGridView _grid = (DataGridView)sender;
             int _sessionid;
+            string[] _sessioncolumns = {"session_id", "sessiondi", "Session ID"};
             if (e.RowIndex != -1)
             {
                 for (int i = 0; i < _grid.ColumnCount; i++)
                 {
 
-                    if (_grid.Columns[i].HeaderText == "session_id" || _grid.Columns[i].HeaderText == "sessionid")
+                    if (_sessioncolumns.Any(_grid.Columns[i].HeaderText.Contains))
                     {
                         _sessionid = int.Parse(_grid.CurrentRow.Cells[0].Value.ToString());
                         try
@@ -224,8 +243,9 @@ namespace Zaiba2
         {
             ComboBox _combo = (ComboBox)sender;
             //BaseQuery query = new BaseQuery();
-            txtQuery.Text = model.Query[int.Parse(_combo.SelectedValue.ToString())].sql;
             //txtQuery.Text = query.QueryTemplate[int.Parse(_combo.SelectedValue.ToString())];
+            //txtQuery.Text = model.Query[int.Parse(_combo.SelectedValue.ToString())].sql;
+            txtQuery.Text = (model.Query.Find(x => x.name.Equals(_combo.Text))).sql;
         }
 
         private void dataGridQueryResult_DataError(object sender, DataGridViewDataErrorEventArgs e)
