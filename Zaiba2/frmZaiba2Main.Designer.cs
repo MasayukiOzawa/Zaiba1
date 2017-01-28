@@ -35,7 +35,7 @@
             this.txtInterval = new System.Windows.Forms.TextBox();
             this.lblIntervalms = new System.Windows.Forms.Label();
             this.txtQuery = new System.Windows.Forms.TextBox();
-            this.dataGridQueryResult = new System.Windows.Forms.DataGridView();
+            this.btnMonitor = new System.Windows.Forms.DataGridView();
             this.timerQuery = new System.Windows.Forms.Timer(this.components);
             this.lblStartTimeTitle = new System.Windows.Forms.Label();
             this.lblEndTimeTitle = new System.Windows.Forms.Label();
@@ -53,7 +53,8 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.chkRunOnce = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridQueryResult)).BeginInit();
+            this.button1 = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.btnMonitor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSetQueryTemplate)).BeginInit();
             this.panelTemplate.SuspendLayout();
             this.SuspendLayout();
@@ -120,28 +121,29 @@
             this.txtQuery.TabIndex = 6;
             this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAllSelect);
             // 
-            // dataGridQueryResult
+            // btnMonitor
             // 
-            this.dataGridQueryResult.AllowUserToAddRows = false;
-            this.dataGridQueryResult.AllowUserToDeleteRows = false;
-            this.dataGridQueryResult.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.btnMonitor.AllowUserToAddRows = false;
+            this.btnMonitor.AllowUserToDeleteRows = false;
+            this.btnMonitor.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridQueryResult.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dataGridQueryResult.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dataGridQueryResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridQueryResult.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
-            this.dataGridQueryResult.Location = new System.Drawing.Point(14, 206);
-            this.dataGridQueryResult.MultiSelect = false;
-            this.dataGridQueryResult.Name = "dataGridQueryResult";
-            this.dataGridQueryResult.ReadOnly = true;
-            this.dataGridQueryResult.RowHeadersVisible = false;
-            this.dataGridQueryResult.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.dataGridQueryResult.RowTemplate.Height = 21;
-            this.dataGridQueryResult.Size = new System.Drawing.Size(1289, 240);
-            this.dataGridQueryResult.TabIndex = 7;
-            this.dataGridQueryResult.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridQueryResult_CellClick);
-            this.dataGridQueryResult.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridQueryResult_DataError);
+            this.btnMonitor.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.btnMonitor.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.btnMonitor.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.btnMonitor.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
+            this.btnMonitor.Location = new System.Drawing.Point(14, 206);
+            this.btnMonitor.MultiSelect = false;
+            this.btnMonitor.Name = "btnMonitor";
+            this.btnMonitor.ReadOnly = true;
+            this.btnMonitor.RowHeadersVisible = false;
+            this.btnMonitor.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.btnMonitor.RowTemplate.Height = 21;
+            this.btnMonitor.Size = new System.Drawing.Size(1225, 240);
+            this.btnMonitor.TabIndex = 7;
+            this.btnMonitor.VirtualMode = true;
+            this.btnMonitor.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridQueryResult_CellClick);
+            this.btnMonitor.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridQueryResult_DataError);
             // 
             // timerQuery
             // 
@@ -286,7 +288,7 @@
             this.lblVersion.Font = new System.Drawing.Font("メイリオ", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.lblVersion.Location = new System.Drawing.Point(942, 152);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(361, 39);
+            this.lblVersion.Size = new System.Drawing.Size(297, 39);
             this.lblVersion.TabIndex = 19;
             // 
             // chkRunOnce
@@ -302,11 +304,23 @@
             this.chkRunOnce.Text = "一度実行し処理停止";
             this.chkRunOnce.UseVisualStyleBackColor = true;
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button1.Location = new System.Drawing.Point(292, 13);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(138, 33);
+            this.button1.TabIndex = 21;
+            this.button1.Text = "リソースモニター";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // frmZaiba2Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1318, 465);
+            this.ClientSize = new System.Drawing.Size(1254, 465);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.chkRunOnce);
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.lblStatus);
@@ -320,7 +334,7 @@
             this.Controls.Add(this.lblDataGetTimeTitle);
             this.Controls.Add(this.lblEndTimeTitle);
             this.Controls.Add(this.lblStartTimeTitle);
-            this.Controls.Add(this.dataGridQueryResult);
+            this.Controls.Add(this.btnMonitor);
             this.Controls.Add(this.txtQuery);
             this.Controls.Add(this.lblIntervalms);
             this.Controls.Add(this.txtInterval);
@@ -330,7 +344,7 @@
             this.Name = "frmZaiba2Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Zaiba2";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridQueryResult)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnMonitor)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSetQueryTemplate)).EndInit();
             this.panelTemplate.ResumeLayout(false);
             this.panelTemplate.PerformLayout();
@@ -347,7 +361,7 @@
         private System.Windows.Forms.TextBox txtInterval;
         private System.Windows.Forms.Label lblIntervalms;
         private System.Windows.Forms.TextBox txtQuery;
-        private System.Windows.Forms.DataGridView dataGridQueryResult;
+        private System.Windows.Forms.DataGridView btnMonitor;
         private System.Windows.Forms.Timer timerQuery;
         private System.Windows.Forms.Label lblStartTimeTitle;
         private System.Windows.Forms.Label lblEndTimeTitle;
@@ -365,6 +379,7 @@
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.CheckBox chkRunOnce;
+        private System.Windows.Forms.Button button1;
     }
 }
 

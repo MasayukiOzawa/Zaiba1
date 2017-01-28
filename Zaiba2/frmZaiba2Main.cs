@@ -15,7 +15,7 @@ namespace Zaiba2
     {
         string constring = string.Empty;
         int commandtimeout = Properties.Settings.Default.CommandTimeout;
-        System.Timers.Timer timer = new System.Timers.Timer();
+        System.Timers.Timer GridTimer = new System.Timers.Timer();
         XMLBaseQuery model;
 
         public frmZaiba2Main()
@@ -64,6 +64,7 @@ namespace Zaiba2
                 catch (SqlException ex)
                 {
                     MessageBox.Show(String.Format("データの取得時にエラーが発生しました。\r\n{0}", ex.Message));
+                    TimerStop();
                 }
             }
         }
@@ -80,22 +81,22 @@ namespace Zaiba2
 
             try
             {
-                int gridrowindex = dataGridQueryResult.FirstDisplayedScrollingRowIndex;
-                int gridcolindex = dataGridQueryResult.FirstDisplayedScrollingColumnIndex;
+                int gridrowindex = btnMonitor.FirstDisplayedScrollingRowIndex;
+                int gridcolindex = btnMonitor.FirstDisplayedScrollingColumnIndex;
 
                 lblDataGetTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
 
                 if (dt.Rows.Count != 0 || chkContinue.Checked == false)
                 {
-                    dataGridQueryResult.DataSource = null;
-                    dataGridQueryResult.DataSource = dt;
-                    if (dataGridQueryResult.RowCount >= gridrowindex && gridrowindex > 0)
+                    btnMonitor.DataSource = null;
+                    btnMonitor.DataSource = dt;
+                    if (btnMonitor.RowCount >= gridrowindex && gridrowindex > 0)
                     {
-                        dataGridQueryResult.FirstDisplayedScrollingRowIndex = gridrowindex;
+                        btnMonitor.FirstDisplayedScrollingRowIndex = gridrowindex;
                     }
-                    if (dataGridQueryResult.ColumnCount >= gridcolindex && gridcolindex > 0)
+                    if (btnMonitor.ColumnCount >= gridcolindex && gridcolindex > 0)
                     {
-                        dataGridQueryResult.FirstDisplayedScrollingColumnIndex = gridcolindex;
+                        btnMonitor.FirstDisplayedScrollingColumnIndex = gridcolindex;
                     }
                 }
                 else
@@ -119,19 +120,14 @@ namespace Zaiba2
         private void TimerStart()
         {
             // タイマーを起動
-            //timerQuery.Interval = int.Parse(txtInterval.Text);
-            //timerQuery.Start();
-
-
-            timer.Elapsed += new ElapsedEventHandler(GetData);
-            timer.Interval = int.Parse(txtInterval.Text);
-            timer.Start();
+            GridTimer.Elapsed += new ElapsedEventHandler(GetData);
+            GridTimer.Interval = int.Parse(txtInterval.Text);
+            GridTimer.Start();
 
         }
         private void TimerStop()
         {
-            //timerQuery.Stop();
-            timer.Stop();
+            GridTimer.Stop();
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -188,6 +184,7 @@ namespace Zaiba2
                 }
                 catch (SqlException)
                 {
+                    TimerStop();
                     throw;
                 }
             }
@@ -242,15 +239,23 @@ namespace Zaiba2
         private void comboQueryTemplate_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox _combo = (ComboBox)sender;
+            txtQuery.Text = (model.Query.Find(x => x.name.Equals(_combo.Text))).sql;
+
             //BaseQuery query = new BaseQuery();
             //txtQuery.Text = query.QueryTemplate[int.Parse(_combo.SelectedValue.ToString())];
             //txtQuery.Text = model.Query[int.Parse(_combo.SelectedValue.ToString())].sql;
-            txtQuery.Text = (model.Query.Find(x => x.name.Equals(_combo.Text))).sql;
         }
 
         private void dataGridQueryResult_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-            dataGridQueryResult.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = e.Exception.Message;
+            btnMonitor.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = e.Exception.Message;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            frmMonitor Monitor = new frmMonitor();
+            Monitor.constring = txtConnectionString.Text;
+            Monitor.Show();
         }
     }
 }
