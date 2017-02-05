@@ -272,4 +272,30 @@ ORDER BY
     ]]>
     </sql>
   </Query>
+<Query>
+    <index>6</index>
+    <name>特定範囲のセッションの INPUT BUFFER を取得</name>
+    <sql>
+    <![CDATA[
+DECLARE @spid int
+
+DROP TABLE IF EXISTS #tmp
+CREATE TABLE #tmp (C1 nvarchar(30), C2 smallint, C3 nvarchar(max))
+
+SET @spid = 50
+
+WHILE(@spid <= 200)
+BEGIN
+	BEGIN TRY
+	INSERT INTO #tmp EXEC ('DBCC INPUTBUFFER (' + @spid +') WITH NO_INFOMSGS ')
+	END TRY
+	BEGIN CATCH
+	END CATCH
+	SET @spid += 1
+END
+
+SELECT * FROM #tmp WHERE C3 is not NULL
+    ]]>
+    </sql>
+  </Query>
 </BaseQuery>

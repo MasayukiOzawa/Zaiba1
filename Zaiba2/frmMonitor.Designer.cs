@@ -28,28 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series13 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series14 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.chartBatch = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.label1 = new System.Windows.Forms.Label();
             this.chartCPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.chartIOPS = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartThroughput = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chartBatch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCPU)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartIOPS)).BeginInit();
@@ -59,30 +59,74 @@
             // chartBatch
             // 
             this.chartBatch.BackColor = System.Drawing.Color.Transparent;
-            chartArea5.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-            chartArea5.AxisX.InterlacedColor = System.Drawing.Color.Transparent;
-            chartArea5.AxisX.LabelStyle.Enabled = false;
-            chartArea5.AxisX.MajorGrid.LineColor = System.Drawing.Color.Green;
-            chartArea5.AxisX.Maximum = 60D;
-            chartArea5.AxisX.Minimum = 0D;
-            chartArea5.AxisY.LabelStyle.Format = "{0:#,0}";
-            chartArea5.AxisY.MajorGrid.LineColor = System.Drawing.Color.Green;
-            chartArea5.BackColor = System.Drawing.Color.Black;
-            chartArea5.Name = "ChartArea";
-            this.chartBatch.ChartAreas.Add(chartArea5);
+            chartArea1.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+            chartArea1.AxisX.InterlacedColor = System.Drawing.Color.Transparent;
+            chartArea1.AxisX.LabelStyle.Enabled = false;
+            chartArea1.AxisX.MajorGrid.LineColor = System.Drawing.Color.Green;
+            chartArea1.AxisX.Maximum = 60D;
+            chartArea1.AxisX.Minimum = 0D;
+            chartArea1.AxisY.LabelStyle.Format = "{0:#,0}";
+            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.Green;
+            chartArea1.BackColor = System.Drawing.Color.Black;
+            chartArea1.Name = "ChartArea";
+            this.chartBatch.ChartAreas.Add(chartArea1);
             this.chartBatch.Location = new System.Drawing.Point(12, 24);
             this.chartBatch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chartBatch.Name = "chartBatch";
-            series8.BackSecondaryColor = System.Drawing.Color.White;
-            series8.BorderWidth = 3;
-            series8.ChartArea = "ChartArea";
-            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series8.Color = System.Drawing.Color.RoyalBlue;
-            series8.IsVisibleInLegend = false;
-            series8.Name = "Series";
-            this.chartBatch.Series.Add(series8);
+            series1.BackSecondaryColor = System.Drawing.Color.White;
+            series1.BorderWidth = 3;
+            series1.ChartArea = "ChartArea";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Color = System.Drawing.Color.RoyalBlue;
+            series1.IsVisibleInLegend = false;
+            series1.Name = "Series";
+            this.chartBatch.Series.Add(series1);
             this.chartBatch.Size = new System.Drawing.Size(273, 145);
             this.chartBatch.TabIndex = 0;
+            // 
+            // chartCPU
+            // 
+            this.chartCPU.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chartCPU.BackColor = System.Drawing.Color.Transparent;
+            chartArea2.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+            chartArea2.AxisX.InterlacedColor = System.Drawing.Color.Transparent;
+            chartArea2.AxisX.LabelStyle.Enabled = false;
+            chartArea2.AxisX.MajorGrid.LineColor = System.Drawing.Color.Green;
+            chartArea2.AxisX.Maximum = 60D;
+            chartArea2.AxisX.Minimum = 0D;
+            chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.Green;
+            chartArea2.AxisY.Maximum = 100D;
+            chartArea2.AxisY.Minimum = 0D;
+            chartArea2.BackColor = System.Drawing.Color.Black;
+            chartArea2.Name = "ChartArea";
+            this.chartCPU.ChartAreas.Add(chartArea2);
+            legend1.Alignment = System.Drawing.StringAlignment.Far;
+            legend1.BackColor = System.Drawing.Color.Transparent;
+            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend1.Name = "Legend1";
+            this.chartCPU.Legends.Add(legend1);
+            this.chartCPU.Location = new System.Drawing.Point(290, 24);
+            this.chartCPU.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.chartCPU.Name = "chartCPU";
+            series2.BackSecondaryColor = System.Drawing.Color.White;
+            series2.BorderWidth = 3;
+            series2.ChartArea = "ChartArea";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Color = System.Drawing.Color.RoyalBlue;
+            series2.Legend = "Legend1";
+            series2.LegendText = "User";
+            series2.Name = "User";
+            series3.BorderWidth = 3;
+            series3.ChartArea = "ChartArea";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series3.Color = System.Drawing.Color.Red;
+            series3.Legend = "Legend1";
+            series3.LegendText = "Internal";
+            series3.Name = "Internal";
+            this.chartCPU.Series.Add(series2);
+            this.chartCPU.Series.Add(series3);
+            this.chartCPU.Size = new System.Drawing.Size(273, 180);
+            this.chartCPU.TabIndex = 2;
             // 
             // label1
             // 
@@ -97,50 +141,6 @@
             this.label1.Size = new System.Drawing.Size(80, 18);
             this.label1.TabIndex = 1;
             this.label1.Text = "バッチ実行数";
-            // 
-            // chartCPU
-            // 
-            this.chartCPU.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.chartCPU.BackColor = System.Drawing.Color.Transparent;
-            chartArea6.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-            chartArea6.AxisX.InterlacedColor = System.Drawing.Color.Transparent;
-            chartArea6.AxisX.LabelStyle.Enabled = false;
-            chartArea6.AxisX.MajorGrid.LineColor = System.Drawing.Color.Green;
-            chartArea6.AxisX.Maximum = 60D;
-            chartArea6.AxisX.Minimum = 0D;
-            chartArea6.AxisY.MajorGrid.LineColor = System.Drawing.Color.Green;
-            chartArea6.AxisY.Maximum = 100D;
-            chartArea6.AxisY.Minimum = 0D;
-            chartArea6.BackColor = System.Drawing.Color.Black;
-            chartArea6.Name = "ChartArea";
-            this.chartCPU.ChartAreas.Add(chartArea6);
-            legend4.Alignment = System.Drawing.StringAlignment.Far;
-            legend4.BackColor = System.Drawing.Color.Transparent;
-            legend4.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            legend4.Name = "Legend1";
-            this.chartCPU.Legends.Add(legend4);
-            this.chartCPU.Location = new System.Drawing.Point(290, 24);
-            this.chartCPU.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.chartCPU.Name = "chartCPU";
-            series9.BackSecondaryColor = System.Drawing.Color.White;
-            series9.BorderWidth = 3;
-            series9.ChartArea = "ChartArea";
-            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series9.Color = System.Drawing.Color.RoyalBlue;
-            series9.Legend = "Legend1";
-            series9.LegendText = "User";
-            series9.Name = "User";
-            series10.BorderWidth = 3;
-            series10.ChartArea = "ChartArea";
-            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series10.Color = System.Drawing.Color.Red;
-            series10.Legend = "Legend1";
-            series10.LegendText = "Internal";
-            series10.Name = "Internal";
-            this.chartCPU.Series.Add(series9);
-            this.chartCPU.Series.Add(series10);
-            this.chartCPU.Size = new System.Drawing.Size(273, 180);
-            this.chartCPU.TabIndex = 2;
             // 
             // label2
             // 
@@ -169,6 +169,90 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "データベース IOPS";
             // 
+            // chartIOPS
+            // 
+            this.chartIOPS.BackColor = System.Drawing.Color.Transparent;
+            chartArea3.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+            chartArea3.AxisX.InterlacedColor = System.Drawing.Color.Transparent;
+            chartArea3.AxisX.LabelStyle.Enabled = false;
+            chartArea3.AxisX.MajorGrid.LineColor = System.Drawing.Color.Green;
+            chartArea3.AxisX.Maximum = 60D;
+            chartArea3.AxisX.Minimum = 0D;
+            chartArea3.AxisY.LabelStyle.Format = "{0:#,0}";
+            chartArea3.AxisY.MajorGrid.LineColor = System.Drawing.Color.Green;
+            chartArea3.BackColor = System.Drawing.Color.Black;
+            chartArea3.Name = "ChartArea";
+            this.chartIOPS.ChartAreas.Add(chartArea3);
+            legend2.Alignment = System.Drawing.StringAlignment.Far;
+            legend2.BackColor = System.Drawing.Color.Transparent;
+            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend2.Name = "Legend1";
+            this.chartIOPS.Legends.Add(legend2);
+            this.chartIOPS.Location = new System.Drawing.Point(12, 221);
+            this.chartIOPS.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.chartIOPS.Name = "chartIOPS";
+            series4.BackSecondaryColor = System.Drawing.Color.White;
+            series4.BorderWidth = 3;
+            series4.ChartArea = "ChartArea";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series4.Color = System.Drawing.Color.RoyalBlue;
+            series4.Legend = "Legend1";
+            series4.LegendText = "Read";
+            series4.Name = "Series";
+            series5.BorderWidth = 3;
+            series5.ChartArea = "ChartArea";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series5.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            series5.Legend = "Legend1";
+            series5.LegendText = "Write";
+            series5.Name = "Series2";
+            this.chartIOPS.Series.Add(series4);
+            this.chartIOPS.Series.Add(series5);
+            this.chartIOPS.Size = new System.Drawing.Size(273, 180);
+            this.chartIOPS.TabIndex = 6;
+            // 
+            // chartThroughput
+            // 
+            this.chartThroughput.BackColor = System.Drawing.Color.Transparent;
+            chartArea4.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+            chartArea4.AxisX.InterlacedColor = System.Drawing.Color.Transparent;
+            chartArea4.AxisX.LabelStyle.Enabled = false;
+            chartArea4.AxisX.MajorGrid.LineColor = System.Drawing.Color.Green;
+            chartArea4.AxisX.Maximum = 60D;
+            chartArea4.AxisX.Minimum = 0D;
+            chartArea4.AxisY.LabelStyle.Format = "{0:#,0}";
+            chartArea4.AxisY.MajorGrid.LineColor = System.Drawing.Color.Green;
+            chartArea4.BackColor = System.Drawing.Color.Black;
+            chartArea4.Name = "ChartArea";
+            this.chartThroughput.ChartAreas.Add(chartArea4);
+            legend3.Alignment = System.Drawing.StringAlignment.Far;
+            legend3.BackColor = System.Drawing.Color.Transparent;
+            legend3.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend3.Name = "Legend1";
+            this.chartThroughput.Legends.Add(legend3);
+            this.chartThroughput.Location = new System.Drawing.Point(298, 221);
+            this.chartThroughput.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.chartThroughput.Name = "chartThroughput";
+            series6.BackSecondaryColor = System.Drawing.Color.White;
+            series6.BorderWidth = 3;
+            series6.ChartArea = "ChartArea";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series6.Color = System.Drawing.Color.RoyalBlue;
+            series6.Legend = "Legend1";
+            series6.LegendText = "Read";
+            series6.Name = "Series";
+            series7.BorderWidth = 3;
+            series7.ChartArea = "ChartArea";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series7.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            series7.Legend = "Legend1";
+            series7.LegendText = "Write";
+            series7.Name = "Series2";
+            this.chartThroughput.Series.Add(series6);
+            this.chartThroughput.Series.Add(series7);
+            this.chartThroughput.Size = new System.Drawing.Size(273, 180);
+            this.chartThroughput.TabIndex = 7;
+            // 
             // label4
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -182,90 +266,6 @@
             this.label4.Size = new System.Drawing.Size(188, 18);
             this.label4.TabIndex = 5;
             this.label4.Text = "データベース スループット (MB)";
-            // 
-            // chartIOPS
-            // 
-            this.chartIOPS.BackColor = System.Drawing.Color.Transparent;
-            chartArea7.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-            chartArea7.AxisX.InterlacedColor = System.Drawing.Color.Transparent;
-            chartArea7.AxisX.LabelStyle.Enabled = false;
-            chartArea7.AxisX.MajorGrid.LineColor = System.Drawing.Color.Green;
-            chartArea7.AxisX.Maximum = 60D;
-            chartArea7.AxisX.Minimum = 0D;
-            chartArea7.AxisY.LabelStyle.Format = "{0:#,0}";
-            chartArea7.AxisY.MajorGrid.LineColor = System.Drawing.Color.Green;
-            chartArea7.BackColor = System.Drawing.Color.Black;
-            chartArea7.Name = "ChartArea";
-            this.chartIOPS.ChartAreas.Add(chartArea7);
-            legend5.Alignment = System.Drawing.StringAlignment.Far;
-            legend5.BackColor = System.Drawing.Color.Transparent;
-            legend5.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            legend5.Name = "Legend1";
-            this.chartIOPS.Legends.Add(legend5);
-            this.chartIOPS.Location = new System.Drawing.Point(12, 221);
-            this.chartIOPS.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.chartIOPS.Name = "chartIOPS";
-            series11.BackSecondaryColor = System.Drawing.Color.White;
-            series11.BorderWidth = 3;
-            series11.ChartArea = "ChartArea";
-            series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series11.Color = System.Drawing.Color.RoyalBlue;
-            series11.Legend = "Legend1";
-            series11.LegendText = "Read";
-            series11.Name = "Series";
-            series12.BorderWidth = 3;
-            series12.ChartArea = "ChartArea";
-            series12.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series12.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            series12.Legend = "Legend1";
-            series12.LegendText = "Write";
-            series12.Name = "Series2";
-            this.chartIOPS.Series.Add(series11);
-            this.chartIOPS.Series.Add(series12);
-            this.chartIOPS.Size = new System.Drawing.Size(273, 180);
-            this.chartIOPS.TabIndex = 6;
-            // 
-            // chartThroughput
-            // 
-            this.chartThroughput.BackColor = System.Drawing.Color.Transparent;
-            chartArea8.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-            chartArea8.AxisX.InterlacedColor = System.Drawing.Color.Transparent;
-            chartArea8.AxisX.LabelStyle.Enabled = false;
-            chartArea8.AxisX.MajorGrid.LineColor = System.Drawing.Color.Green;
-            chartArea8.AxisX.Maximum = 60D;
-            chartArea8.AxisX.Minimum = 0D;
-            chartArea8.AxisY.LabelStyle.Format = "{0:#,0}";
-            chartArea8.AxisY.MajorGrid.LineColor = System.Drawing.Color.Green;
-            chartArea8.BackColor = System.Drawing.Color.Black;
-            chartArea8.Name = "ChartArea";
-            this.chartThroughput.ChartAreas.Add(chartArea8);
-            legend6.Alignment = System.Drawing.StringAlignment.Far;
-            legend6.BackColor = System.Drawing.Color.Transparent;
-            legend6.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            legend6.Name = "Legend1";
-            this.chartThroughput.Legends.Add(legend6);
-            this.chartThroughput.Location = new System.Drawing.Point(298, 221);
-            this.chartThroughput.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.chartThroughput.Name = "chartThroughput";
-            series13.BackSecondaryColor = System.Drawing.Color.White;
-            series13.BorderWidth = 3;
-            series13.ChartArea = "ChartArea";
-            series13.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series13.Color = System.Drawing.Color.RoyalBlue;
-            series13.Legend = "Legend1";
-            series13.LegendText = "Read";
-            series13.Name = "Series";
-            series14.BorderWidth = 3;
-            series14.ChartArea = "ChartArea";
-            series14.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series14.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            series14.Legend = "Legend1";
-            series14.LegendText = "Write";
-            series14.Name = "Series2";
-            this.chartThroughput.Series.Add(series13);
-            this.chartThroughput.Series.Add(series14);
-            this.chartThroughput.Size = new System.Drawing.Size(273, 180);
-            this.chartThroughput.TabIndex = 7;
             // 
             // frmMonitor
             // 
@@ -302,12 +302,12 @@
         #endregion
 
         private System.Windows.Forms.DataVisualization.Charting.Chart chartBatch;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartCPU;
+        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartIOPS;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartThroughput;
+        private System.Windows.Forms.Label label4;
     }
 }

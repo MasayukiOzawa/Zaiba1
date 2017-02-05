@@ -19,6 +19,12 @@ namespace Zaiba2
         System.Timers.Timer IOPSTimer = new System.Timers.Timer();
         System.Timers.Timer ThroughputTimer = new System.Timers.Timer();
 
+        bool isBatchTimerRunning = false;
+        bool isCPUTimerRunning = false;
+        bool isIOPSTimerRunning = false;
+        bool isThroughputTimerRunning = false;
+
+
         #region フォームの制御
         public frmMonitor()
         {
@@ -63,6 +69,9 @@ SELECT @current_time = GETDATE(), @current_count = cntr_value from sys.dm_os_per
 
 SELECT CAST((@current_count - @previous_count ) / (DATEDIFF(ms, @previous_time, @current_time) / 1000.0) AS bigint) AS batch_request
 ";
+            if (isBatchTimerRunning == true){return;}
+            else{isBatchTimerRunning = true;
+            }
             long data;
             using (System.Data.SqlClient.SqlConnection con = new System.Data.SqlClient.SqlConnection())
             {
@@ -74,8 +83,12 @@ SELECT CAST((@current_count - @previous_count ) / (DATEDIFF(ms, @previous_time, 
                 dr.Read();
 
                 data = dr.GetInt64(0);
+
+                System.Data.SqlClient.SqlConnection.ClearPool(con); // 単一接続で複数のモニターの情報を取得するまでのセッション数節約の暫定対応
             }
+            
             SetBatchChart(data);
+            isBatchTimerRunning = false;
         }
         delegate void SetBatchChartDelegate(double data);
         private void SetBatchChart(double data)
@@ -97,7 +110,7 @@ SELECT CAST((@current_count - @previous_count ) / (DATEDIFF(ms, @previous_time, 
                         max = point.YValues[0];
                     }
                 }
-                chartBatch.ChartAreas[0].AxisY.Maximum = max;
+                chartBatch.ChartAreas[0].AxisY.Maximum = max + 10;
 
                 if (chartBatch.Series[0].Points.Count > 60)
                 {
@@ -227,6 +240,9 @@ BEGIN
 	ORDER BY 1
 END
 ";
+            if (isCPUTimerRunning == true){return;}
+            else{isCPUTimerRunning = true;}
+
             List<double> data = new List<double>();
 
             using (System.Data.SqlClient.SqlConnection con = new System.Data.SqlClient.SqlConnection())
@@ -241,16 +257,17 @@ END
                     data.Add((double)dr.GetDecimal(4));
                 }
 
+                System.Data.SqlClient.SqlConnection.ClearPool(con); // 単一接続で複数のモニターの情報を取得するまでのセッション数節約の暫定対応
             }
             SetCPUChart(data);
+
+            isCPUTimerRunning = false;
         }
 
         delegate void SetCPUChartDelegate(List<double> data);
 
         private void SetCPUChart(List<double> data)
         {
-
-            if (!this.IsHandleCreated) return;
             try
             {
                 if (InvokeRequired)
@@ -308,7 +325,10 @@ SELECT
 	CAST((@current_read_count - @previous_read_count ) / (DATEDIFF(ms, @previous_time, @current_time) / 1000.0) AS bigint) AS NumberReads,
 	CAST((@current_write_count - @previous_write_count ) / (DATEDIFF(ms, @previous_time, @current_time) / 1000.0) AS bigint) AS NumberWrites
 ";
+            if (isIOPSTimerRunning == true){return;}
+            else{isIOPSTimerRunning = true;}
             List<long> data = new List<long>();
+
             using (System.Data.SqlClient.SqlConnection con = new System.Data.SqlClient.SqlConnection())
             {
                 con.ConnectionString = constring;
@@ -321,8 +341,12 @@ SELECT
                 data.Add(dr.GetInt64(0));
                 data.Add(dr.GetInt64(1));
 
+                System.Data.SqlClient.SqlConnection.ClearPool(con); // 単一接続で複数のモニターの情報を取得するまでのセッション数節約の暫定対応
+
             }
             SetIOPSChart(data);
+
+            isIOPSTimerRunning = false;
         }
         delegate void SetIOPSChartDelegate(List<long> data);
         private void SetIOPSChart(List<long> data)
@@ -353,7 +377,7 @@ SELECT
                         max = point.YValues[0];
                     }
                 }
-                chartIOPS.ChartAreas[0].AxisY.Maximum = max;
+                chartIOPS.ChartAreas[0].AxisY.Maximum = max + 10;
 
                 if (chartIOPS.Series[0].Points.Count > 60)
                 {
@@ -403,7 +427,16 @@ SELECT
 	CAST((@current_readbyte - @previous_readbyte ) / (DATEDIFF(ms, @previous_time, @current_time) / 1000.0) AS bigint) / POWER(1024,2) AS [MBytesRead],
 	CAST((@current_writebyte - @previous_writebyte ) / (DATEDIFF(ms, @previous_time, @current_time) / 1000.0) AS bigint) / POWER(1024,2) AS [MBytesWritten]
 ";
+            if (isThroughputTimerRunning == true)
+            {
+                return;
+            }
+            else
+            {
+                isThroughputTimerRunning = true;
+            }
             List<long> data = new List<long>();
+
             using (System.Data.SqlClient.SqlConnection con = new System.Data.SqlClient.SqlConnection())
             {
                 con.ConnectionString = constring;
@@ -416,8 +449,12 @@ SELECT
                 data.Add(dr.GetInt64(0));
                 data.Add(dr.GetInt64(1));
 
+                System.Data.SqlClient.SqlConnection.ClearPool(con); // 単一接続で複数のモニターの情報を取得するまでのセッション数節約の暫定対応
+
             }
             SetThroughputChart(data);
+
+            isThroughputTimerRunning = false;
         }
         delegate void SetThroughputChartDelegate(List<long> data);
         private void SetThroughputChart(List<long> data)
@@ -448,7 +485,7 @@ SELECT
                         max = point.YValues[0];
                     }
                 }
-                chartThroughput.ChartAreas[0].AxisY.Maximum = max;
+                chartThroughput.ChartAreas[0].AxisY.Maximum = max + 10;
 
                 if (chartThroughput.Series[0].Points.Count > 60)
                 {

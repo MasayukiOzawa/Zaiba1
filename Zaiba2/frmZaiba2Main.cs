@@ -17,7 +17,8 @@ namespace Zaiba2
         int commandtimeout = Properties.Settings.Default.CommandTimeout;
         System.Timers.Timer GridTimer = new System.Timers.Timer();
         XMLBaseQuery model;
-
+        bool isGirdTimmerRunning = false;
+     
         public frmZaiba2Main()
         {
             InitializeComponent();
@@ -49,6 +50,13 @@ namespace Zaiba2
 
         private void GetData(object sender, EventArgs e)
         {
+            if (isGirdTimmerRunning == true) {
+                return;
+            }else
+            {
+                isGirdTimmerRunning = true;
+            }
+
             using (SqlConnection con = new SqlConnection(constring))
             {
                 try {
@@ -65,6 +73,10 @@ namespace Zaiba2
                 {
                     MessageBox.Show(String.Format("データの取得時にエラーが発生しました。\r\n{0}", ex.Message));
                     TimerStop();
+                }
+                finally
+                {
+                    isGirdTimmerRunning = false;
                 }
             }
         }
@@ -161,6 +173,7 @@ namespace Zaiba2
             }
             catch (Exception ex)
             {
+                isGirdTimmerRunning = false;
                 TimerStop();
                 MessageBox.Show(String.Format("エラーが発生しました。\r\n{0}", ex.Message));
 
@@ -187,14 +200,20 @@ namespace Zaiba2
                     TimerStop();
                     throw;
                 }
+                finally
+                {
+                    SqlConnection.ClearPool(con);
+                }
             }
         }
         private void btnStop_Click(object sender, EventArgs e)
         {
+            isGirdTimmerRunning = false;
             btnStart.Enabled = true;
             lblEndTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
             lblStatus.Text = "停止";
             TimerStop();
+            System.Data.SqlClient.SqlConnection.ClearAllPools();
         }
 
         private void txtAllSelect(object sender, KeyEventArgs e)
